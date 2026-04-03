@@ -17,7 +17,7 @@ version: "1.0.0"
 mcp:
   server_name: apify
   command: npx
-  args: ["-y", "@apify/actors-mcp-server@latest"]
+  args: ["-y", "@apify/actors-mcp-server@0.9.16"]
 env:
   - APIFY_TOKEN
 categories: [scraping, data, automation]

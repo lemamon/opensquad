@@ -49,16 +49,15 @@ export async function createChildContainer(userId, imageUrl, accessToken) {
   const params = new URLSearchParams({
     image_url: imageUrl,
     is_carousel_item: 'true',
-    access_token: accessToken,
   });
-  const res = await fetch(`${IG_BASE}/${userId}/media?${params}`, { method: 'POST' });
+  const res = await fetch(`${IG_BASE}/${userId}/media?${params}`, { method: 'POST', headers: { Authorization: `Bearer ${accessToken}` } });
   if (!res.ok) throw new Error(`createChildContainer failed [${res.status}]: ${await res.text()}`);
   return (await res.json()).id;
 }
 
 export async function getContainerStatus(containerId, accessToken) {
-  const params = new URLSearchParams({ fields: 'status_code', access_token: accessToken });
-  const res = await fetch(`${IG_BASE}/${containerId}?${params}`);
+  const params = new URLSearchParams({ fields: 'status_code' });
+  const res = await fetch(`${IG_BASE}/${containerId}?${params}`, { headers: { Authorization: `Bearer ${accessToken}` } });
   if (!res.ok) throw new Error(`getContainerStatus failed [${res.status}]: ${await res.text()}`);
   return (await res.json()).status_code;
 }
@@ -79,23 +78,22 @@ export async function createCarouselContainer(userId, childIds, caption, accessT
     media_type: 'CAROUSEL',
     children: childIds.join(','),
     caption,
-    access_token: accessToken,
   });
-  const res = await fetch(`${IG_BASE}/${userId}/media?${params}`, { method: 'POST' });
+  const res = await fetch(`${IG_BASE}/${userId}/media?${params}`, { method: 'POST', headers: { Authorization: `Bearer ${accessToken}` } });
   if (!res.ok) throw new Error(`createCarouselContainer failed [${res.status}]: ${await res.text()}`);
   return (await res.json()).id;
 }
 
 export async function publishMedia(userId, containerId, accessToken) {
-  const params = new URLSearchParams({ creation_id: containerId, access_token: accessToken });
-  const res = await fetch(`${IG_BASE}/${userId}/media_publish?${params}`, { method: 'POST' });
+  const params = new URLSearchParams({ creation_id: containerId });
+  const res = await fetch(`${IG_BASE}/${userId}/media_publish?${params}`, { method: 'POST', headers: { Authorization: `Bearer ${accessToken}` } });
   if (!res.ok) throw new Error(`publishMedia failed [${res.status}]: ${await res.text()}`);
   return (await res.json()).id;
 }
 
 export async function getPermalink(mediaId, accessToken) {
-  const params = new URLSearchParams({ fields: 'permalink', access_token: accessToken });
-  const res = await fetch(`${IG_BASE}/${mediaId}?${params}`);
+  const params = new URLSearchParams({ fields: 'permalink' });
+  const res = await fetch(`${IG_BASE}/${mediaId}?${params}`, { headers: { Authorization: `Bearer ${accessToken}` } });
   if (!res.ok) return null; // non-fatal — just skip the URL display
   const json = await res.json();
   return json.permalink ?? null;

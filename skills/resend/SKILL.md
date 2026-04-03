@@ -17,7 +17,7 @@ version: "1.0.0"
 mcp:
   server_name: resend
   command: npx
-  args: ["-y", "resend-mcp"]
+  args: ["-y", "resend-mcp@2.2.0"]
   transport: stdio
 env:
   - RESEND_API_KEY
